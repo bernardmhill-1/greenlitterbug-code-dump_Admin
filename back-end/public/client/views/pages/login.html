@@ -1,0 +1,25 @@
+<div class="card">
+    <div class="card-block">
+
+      <div class="row">
+          <div class="col-sm-6 col-md-4 col-md-offset-4">
+              <h1>Login</h1>
+              <form class="form-sigin" method="post" ng-submit="user.signupUser()">
+                  Email: <input type="text" class="form-control" ng-model="user.userData.email" name="email" />
+                  Password: <input type="password" class="form-control" ng-model="user.userData.password" name="password" />
+                  <div class="clear">&nbsp;</div>
+                  <button type="submit" class="btn btn-primary">Login</button>
+              </form>
+          </div>
+      </div>
+    <br/>
+
+    <!--Footer-->
+    <div class="modal-footer">
+        <div class="options">
+            <p>Not a member? <a href="signup">Sign Up</a></p>
+            <p>Forgot <a href="#">Password?</a></p>
+        </div>
+    </div>
+
+</div>

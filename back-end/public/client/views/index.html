@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+  <meta charset="utf-8">
+  <base href="/">
+  <title>MEANapp</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../public/vendors/scripts/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../public/vendors/scripts/font-awesome/css/font-awesome.min.css">
+</head>
+<body>
+
+<div class="jumbotron text-center">
+  <h1>MEAN app index page</h1>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="container">
+
+    <div ui-view></div>
+
+</div>
+
+<!-- Vendors -->
+<script src="../public/vendors/scripts/jquery/jquery.min.js"></script>
+<script src="../public/vendors/scripts/bootstrap/js/bootstrap.min.js"></script>
+<script src="../public/vendors/scripts/angular/angular.min.js"></script>
+<script src="../public/vendors/scripts/angular-ui-router/angular-ui-router.min.js"></script>
+<script src="../public/vendors/scripts/ng-file-upload/ng-file-upload-shim.min.js"></script>
+<script src="../public/vendors/scripts/ng-file-upload/ng-file-upload.min.js"></script>
+<!-- Directives -->
+<script src="../public/client/directives/fileupload.js"></script>
+<!-- Routes & Main moudule -->
+<script src="../public/client/app.routes.js"></script>
+<script src="../public/client/app.js"></script>
+<!-- Controllers -->
+<script src="../public/client/controllers/userCtrl.js"></script>
+<!-- Services -->
+<script src="../public/client/services/userService.js"></script>
+</body>
+</html>
