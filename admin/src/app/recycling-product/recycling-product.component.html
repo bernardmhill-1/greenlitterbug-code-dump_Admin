@@ -1,0 +1,134 @@
+<div class="content-wrapper">
+  <section class="content-header">
+  </section>
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="box">
+          <div class="box-header">
+            <h5 class="box-title">Recycling Product</h5>
+          </div>
+          <div class="row" style="margin-bottom: 10px;">
+            <div class="col-xs-6">
+              <label  style="margin-top: 14px;">Sort By : &nbsp;</label>
+
+              <select class="form-control "
+                      (change)="onDocTypeChange($event)"
+                       style=" border-color: #cacaca; width: 60%;display: inline;" >
+             <option *ngFor='let item of sort_array' value='{{item.value}}'>{{item.status}}</option>
+             </select>
+          </div>
+           <div class="col-xs-6">
+
+              <div class="search" >
+                  <input id="searchinput"
+                    placeholder="Search By Company Name"
+                    [(ngModel)]="searchUserTerm"
+                    type="search"
+                    class="form-control"
+                    style=" border-color: #cacaca; width: 85%;display: inline;"
+                    (keyup)='getSearchedUser($event)'>
+
+                    <div style="position: relative; right: -451px;top: -31px;">
+                      <span id="searchclear" class="glyphicon" (click)='searchUserCloseTerm()'>
+                          <i class="fa fa-times"></i>
+                      </span>
+                    </div>
+             </div>
+          </div>
+      </div>
+
+          <!-- /.box-header -->
+          <div class="box-body">
+            <div class="table-responsive">
+              <table class="table table-bordered  table-condensed table-hover">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Company name</th>
+                    <th>Bean type</th>
+                    <th>Bar Code</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr *ngFor="let item of data">
+                    <td><img *ngIf="item.productImage" src="{{item.productImage}}" width="50" /></td>
+                    <td>{{item.companyName}}</td>
+                    <td>{{item.binCode}}</td>
+                    <td>{{item.barCode}}</td>
+                    <td>{{item.createdAt | date: 'dd/MM/yyyy'}}</td>
+                    <td>
+                      <button type="button" class="btn btn-primary" (click)="getDetails(item)" data-toggle="modal"
+                        data-target="#modal-form" title="View">
+                        <i class="fa fa-eye"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                  </tr>
+                </tfoot>
+              </table>
+              <button class="btn btn-sm btn-primary reload" (click)="loadmore()">
+                <i class="fa fa-repeat"></i> load more</button>
+            </div>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<div class="modal fade" id="modal-form">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title" id="myModalLabel">{{pagetitle}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+
+            <div class="form-group">
+              <label for="">Company name:</label> {{item.companyName}}
+            </div>
+            <div class="form-group">
+              <label for="">Bin Type:</label> {{item.binCode}}
+            </div>
+            <div class="form-group">
+              <label for="">Location:</label> {{item.place}}
+            </div>
+            <div class="form-group">
+              <label for="">Product Type:</label> {{item.RecyclingProductType}}
+            </div>
+            <div class="form-group">
+              <label for="">Barcode:</label> {{item.barCode}}
+            </div>
+            <div class="form-group">
+              <label for="">Image:</label> <img src="{{item.productImage}}" *ngIf='item.productImage' width="100" />
+            </div>
+            <div class="form-group">
+              <label for="">User Details:</label> <span *ngIf="item.User">{{item.User.first_name}}
+                {{item.User.last_name}} ({{item.User.email}})</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }">
+</ngx-loading>

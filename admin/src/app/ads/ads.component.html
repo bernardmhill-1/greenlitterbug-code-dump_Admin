@@ -1,0 +1,164 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+  </section>
+  <!-- Main content -->
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="box">
+          <div class="box-header">
+            <h5 class="box-title">Ads Management</h5>
+            <button title="Add new" id="modal-add" class="btn btn-primary pull-right" data-target="#modal-form"
+              data-toggle="modal" (click)="addNew()">
+              <i class="fa fa-plus"></i> Add New</button>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body">
+            <div class="table-responsive">
+              <table class="table table-bordered  table-condensed table-hover">
+                <thead>
+                  <tr>
+                    <th>Vendor</th>
+                    <th>Image</th>
+                    <th>Content</th>
+                    <th>Featured</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of data">
+                    <td>{{item.vendorId.ownerName}}</td>
+                    <td><img *ngIf="item.image" src="{{item.image}}" width="50" height="50"/></td>
+                    <td>{{item.content}}</td>
+                    <td>
+                      <span style="cursor: pointer;" data-status="" (click)="featuredSet(item)"
+                        class="btn-smbadge badge  {{item.isFeatured == 'yes' ? 'bg-green' : 'bg-red'}}">{{item.isFeatured == 'yes' ? 'Yes' : 'No'}}</span>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary margin-r-5"
+                            data-target="#modal-form" data-toggle="modal"
+                            (click)="getDetails(item);editC()" title="View">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                      <!-- <button type="button" class="btn btn-primary" (click)="getDetails(item)" data-toggle="modal"
+                        data-target="#modal-form-view" title="View">
+                        <i class="fa fa-eye"></i>
+                      </button>&nbsp; -->
+                      <button type="button" class="btn btn-primary margin-r-5" (click)="deleteData(item)"
+                        title="Delete">
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <button class="btn btn-sm btn-primary reload" (click)="loadmore()">
+                <i class="fa fa-repeat"></i>&nbsp; load more</button>
+            </div>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<div class="modal fade" id="modal-form">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title" id="myModalLabel">{{pagetitle}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="form-group" >
+              <label for="">Vendor Name</label>
+              <select class="form-control" [(ngModel)]="vendorId" [disabled] = 'edit'>
+                <option value="" selected>Select Vendor</option>
+                <option *ngFor="let itemVendor of dataVendor" value="{{itemVendor._id}}"> {{itemVendor.ownerName}} </option>
+              </select>
+            </div>
+            <div class="form-group">
+                <label for="">Content</label>
+                <input class="form-control" type="text" [(ngModel)]="item.content" />
+              </div>
+            
+            <div class="form-group">
+              <label for="">Image</label>
+                <div class="col-sm-12" *ngIf='item.image'>
+                  <img src="{{item.image}}" style="height:100px; width: 100px;" />
+                </div>
+              <input type="file" (change)="onSelectImageFile($event)" id="imageFile" accept="image/gif,image/jpeg,image/jpg,image/png">
+            </div>
+            
+            <div class="form-group" *ngIf='privewfile'>
+              <img [src]="privewfile" ngClass="img-lg">
+            </div>
+            
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" (click)="saveData()" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+<div class="modal fade" id="modal-form-view">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title" id="myModalLabel">{{pagetitle}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label for="">Company Name:</label> {{item.companyName}}
+            </div>
+            <div class="form-group">
+              <label for="">Owner Name:</label> {{item.ownerName}}
+            </div>
+            <div class="form-group">
+              <label for="">Company Logo:</label>
+              <div class="col-sm-12">
+                <img src="{{item.companyLogo}}" style="height:100px; width: 100px;" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="">Description:</label>
+              <div innerHTML="{{item.description}}"></div>
+            </div>
+            <div class="form-group">
+              <label for="">Email:</label> {{item.email}}
+            </div>
+            <div class="form-group">
+              <label for="">Phone Number:</label> {{item.phoneNo}}
+            </div>
+            <div class="form-group">
+              <label for="">Website:</label> {{item.websiteUrl}}
+            </div>
+            <div class="form-group">
+              <label for="">Address:</label> {{item.address}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }">
+</ngx-loading>

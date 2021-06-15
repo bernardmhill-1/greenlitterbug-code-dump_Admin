@@ -1,0 +1,122 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+  </section>
+  <!-- Main content -->
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="box">
+          <div class="box-header">
+            <h5 class="box-title">Product Barcode Management</h5>
+            <button title="Add new" id="modal-add" class="btn btn-primary pull-right" data-target="#modal-form"
+              data-toggle="modal" (click)="addNew()">
+              <i class="fa fa-plus"></i> Add New</button>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body">
+            <div class="table-responsive">
+              <table class="table table-bordered  table-condensed table-hover">
+                <thead>
+                  <tr>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Barcode</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-template [ngIf]="data.length>0" [ngIfElse]="nodata">
+                    <tr *ngFor="let item of data">
+                      <td><img *ngIf="item.image" src="{{item.image}}" width="50" height="50" /></td>
+                      <td>{{item.name}}</td>
+                      <td>{{item.barcode}}</td>
+                      <td>
+                        <button type="button" class="btn btn-primary margin-r-5" data-target="#modal-form"
+                          data-toggle="modal" (click)="getDetails(item);" title="View">
+                          <i class="fa fa-edit"></i>
+                        </button>
+                        <button type="button" class="btn btn-primary margin-r-5" (click)="deleteData(item)"
+                          title="Delete">
+                          <i class="fa fa-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </ng-template>
+                  <ng-template #nodata>
+                    <tr>
+                      <td colspan="4" align="center">No product found</td>
+                    </tr>
+                  </ng-template>
+                </tbody>
+              </table>
+              <button class="btn btn-sm btn-primary reload" (click)="loadmore()">
+                <i class="fa fa-repeat"></i>&nbsp; load more</button>
+            </div>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<div class="modal fade" id="modal-form">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title" id="myModalLabel">{{pagetitle}}</h4>
+      </div>
+      <div class="modal-body">
+
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label>Product type </label>
+              <select class="form-control" [(ngModel)]="item.productType">
+                <option value="">--Select--</option>
+                <option *ngFor="let cat of allCategory" value={{cat._id}}>
+                  {{cat.productTypeName}}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="">Name</label>
+              <input class="form-control" type="text" [(ngModel)]="item.name" />
+            </div>
+            <div class="form-group">
+              <label for="">barcode</label>
+              <input class="form-control" type="text" [(ngModel)]="item.barcode" />
+            </div>
+            <div class="form-group">
+              <label for="">Image</label>
+              <div class="form-group" *ngIf='item.image'>
+                <img src="{{item.image}}" style="height:100px; width: 100px; margin-bottom: 5px;" />
+              </div>
+              <div class="form-group">
+                <input type="file" (change)="onSelectImageFile($event)" id="imageFile"
+                  accept="image/gif,image/jpeg,image/jpg,image/png">
+              </div>
+            </div>
+            <div class="form-group" *ngIf='privewfile'>
+              <img [src]="privewfile" ngClass="img-lg">
+            </div>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" (click)="saveData()" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }">
+</ngx-loading>

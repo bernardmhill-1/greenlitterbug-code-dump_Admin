@@ -1,0 +1,105 @@
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h5 class="box-title">User Management</h5>
+                        <a (click)="generateReport()" class="btn btn-primary pull-right " > 
+                            <i class="fa fa-download"></i> Download Report
+                        </a>
+                    </div>
+                    
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered  table-condensed table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email Address</th>
+                                        <th>Total Recycle</th>
+                                        <th>Total Reward</th>
+                                        <th>Redeem Reward</th>
+                                        <th>View Details</th>
+                                        <!-- <th>Recycling Product List</th> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of data">
+                                        <td>{{item.first_name}} {{item.last_name}}</td>
+                                        <td>{{item.email}}</td>
+                                        <td>{{item.RecycleProducts}}</td>
+                                        <td>{{item.totalReward}}</td>
+                                        <td>{{item.totalReward - item.remainReward}}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary" (click)="getDetails(item)" data-toggle="modal" data-target="#modal-form"
+                                                title="View">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
+                                        </td>
+                                        <!-- <td>
+                                            <a [routerLink]="['/recyclingProduct',item._id]"  class="btn btn-primary"><i class="fa fa-list"></i></a>
+                                        </td> -->
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button class="btn btn-sm btn-primary reload" (click)="loadmore()">
+                                <i class="fa fa-repeat"></i>&nbsp; load more</button>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<div class="modal fade" id="modal-form">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">{{pagetitle}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="">Name:</label> {{item.first_name}} {{item.last_name}}
+                        </div>
+                        <div class="form-group">
+                            <label for="">Email Adress:</label> {{item.email}}
+                        </div>
+                        <div class="form-group">
+                            <label for="">Phone No:</label>{{item.phone_no}}
+                        </div>
+                        <div class="form-group" *ngIf="item.profile_image">
+                            <label for="">Profile Image:</label>
+                            <p><img src="{{item.profile_image}}" style="width: 30%" /></p>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Total Reward:</label> {{item.totalReward}}
+                        </div>
+                        <div class="form-group">
+                            <label for="">Remaining Reward:</label> {{item.remainReward}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" >
+</ngx-loading>

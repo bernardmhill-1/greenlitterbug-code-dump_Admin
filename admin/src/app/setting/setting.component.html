@@ -1,0 +1,84 @@
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h5 class="box-title">Setting</h5>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered  table-condensed table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of data">
+                                        <td [innerHtml]="item.title"></td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary" id="modalprintedit" (click)="getDetails(item)"
+                                                data-toggle="modal" data-target="#modal-form" title="Edit">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<div class="modal fade" id="modal-form">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">{{pagetitle}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="">Title</label>
+                            <input type="text" class="form-control" id="" [(ngModel)]="item.title" readonly=true/>
+                            <input type="hidden" class="form-control" id="" [(ngModel)]="item.value_type" readonly=true/>
+                        </div>
+                        <div class="form-group" *ngIf="item.value_type=='img'">
+                            <label for="">Image</label>
+                            <input type="file" (change)="onSelectFile($event)"  accept="image/gif,image/jpeg,image/jpg,image/png">
+                        </div>
+                        <div class="form-group" *ngIf="item.value_type=='img'">
+                            <img *ngIf='privewfile' [src]="privewfile" ngClass="img-lg">
+                            <img *ngIf="!privewfile && item.value!=''" src="{{item.value}}" ngClass="img-lg">
+                        </div>
+                        <div class="form-group" *ngIf="item.value_type!='img'">
+                            <label for="">Value</label>
+                            <textarea [(ngModel)]='item.value' class="form-control"   rows="6" cols="30"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" (click)="saveData()" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

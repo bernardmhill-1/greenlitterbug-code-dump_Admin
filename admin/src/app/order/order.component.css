@@ -1,0 +1,11 @@
+.table td {
+    text-align: center;   
+ }
+ .tb2 td:first-child {
+    text-align: right;
+    width: 20%;   
+ }
+
+ .tb2 td:nth-child(2) {
+    text-align: left;
+ }

@@ -1,0 +1,239 @@
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h5 class="box-title">Cause Management</h5>
+                        <button title="Add new" id="modal-add" class="btn btn-primary pull-right"
+                            data-target="#modal-form" data-toggle="modal" (click)="addNew()">
+                            <i class="fa fa-plus"></i> Add New</button>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered  table-condensed table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Document Upload</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of data">
+                                        <td> {{item.title}}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary margin-r-5"
+                                                data-target="#modal-form-upload" data-toggle="modal"
+                                                (click)="uploadDoc(item)" title="Upload Document">
+                                                <i class="fa fa-upload"></i>
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary margin-r-5"
+                                                data-target="#modal-form" data-toggle="modal"
+                                                (click)="viwData(item);editC()" title="View">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-primary margin-r-5"
+                                                data-target="#modal-form-view" data-toggle="modal"
+                                                (click)="viwData(item)" title="View">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-primary margin-r-5"
+                                                (click)="deleteData(item)" title="Delete">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button class="btn btn-sm btn-primary reload" (click)="loadmore()">
+                                <i class="fa fa-repeat"></i>&nbsp; load more</button>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<div class="modal fade" id="modal-form">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">{{pagetitle}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="">Title</label>
+                            <input type="text" class="form-control" id="" [(ngModel)]="item.title" />
+                        </div>
+                        <div class="form-group">
+                            <label for="">Description</label>
+                            <ckeditor [(ngModel)]='item.description' [readonly]="false" debounce="500">
+                            </ckeditor>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Images</label>
+                            <div class="col-sm-12">
+                                <p *ngFor="let img of item.image; let i = index" style="display: inline-block; margin-right: 10px;">
+                                    <i class="fa fa-times image-delete" (click)='deleteImage(item._id,img._id, i)'></i>
+                                    <img src="{{img.imageUrl}}" style="height:100px; width: 100px;" />
+                                </p>
+                            </div>
+                            <input type="file" (change)="onSelectImageFile($event)" id="imageFile"
+                                accept="image/gif,image/jpeg,image/jpg,image/png" multiple>
+                        </div>
+                        <div class="form-group">
+                            <p style="margin-right:10px;display:inline-block;" *ngFor="let file_item of privewfile">
+                                <img *ngIf='file_item' [src]="file_item" ngClass="img-lg">
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" (click)="saveData()" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<div class="modal fade" id="modal-form-upload">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">{{pagetitle}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <input type="hidden" [(ngModel)]="item._id" />
+                            <label for="">Documents</label>
+                            <p><input type="text" class="form-control" placeholder="Document title"
+                                    [(ngModel)]="item.doctitle" /></p>
+                            <p><input type="file" accept=".pdf,.doc,.docx" (change)="onSelectDocFile($event)"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" (click)="uploadData()" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<div class="modal fade" id="modal-form-view">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">{{pagetitle}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="">Title:</label> {{item.title}}
+                        </div>
+                        <div class="form-group">
+                            <label for="">Description:</label>
+                            <div innerHTML="{{item.description}}"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Images:</label>
+                            <div class="col-sm-12">
+                                <p *ngFor="let img of item.image" style="display: inline-block; margin-right: 10px;">
+                                    <img src="{{img.imageUrl}}" style="height:100px; width: 100px;" />
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group" *ngIf="item.document">
+                            <label for="">Document:</label>
+                            <div class="col-sm-12">
+                                <table>
+                                    <tr *ngFor="let doc of item.document; let i = index">
+                                        <td>{{doc.title}} :</td>
+                                        <td><a href="{{doc.fileUrl}}" target="_blank"><i class="fa fa-download"></i></a></td>
+                                        <td><i class="fa fa-times" (click)='deleteDocument(item._id,doc._id, i)'></i></td>
+                                    </tr>
+                                     
+                                </table>
+                            </div>
+                            <p *ngFor="let item of data">
+                                <img src="{{item.profile_image}}" style="width: 30%" />
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Form -->
+<!-- <div class="modal fade" id="modal-form-edit">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">{{pagetitle}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="">Title:</label>
+                            <input type="text" class="form-control" id="" [(ngModel)]="item.title" [readonly]="true" />
+                        </div>
+                        <div class="form-group">
+                            <label for="">Description</label>
+                            <ckeditor [(ngModel)]='item.description'  [readonly]="false" debounce="500">
+                            </ckeditor>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="">Images:</label>
+                            <div class="col-sm-12">
+                                <p *ngFor="let img of item.image" style="display: inline-block; margin-right: 10px;">
+                                    <i class="fa fa-times image-delete" (click)='deleteImage(item._id,img._id, i)'></i>
+                                    <img src="{{img.imageUrl}}" style="height:100px; width: 100px;" />
+                                </p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div> -->
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" >
+</ngx-loading>

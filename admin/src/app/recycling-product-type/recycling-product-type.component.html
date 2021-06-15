@@ -1,0 +1,95 @@
+<div class="content-wrapper">
+  <section class="content-header">
+  </section>
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="box">
+          <div class="box-header">
+            <h5 class="box-title">Recycling Product Type</h5>
+            <button title="Add new" id="modal-add" class="btn btn-primary pull-right" (click)="addNew()"
+              data-target="#modal-form" data-toggle="modal">
+              <i class="fa fa-plus"></i> Add New</button>
+          </div>
+
+          <!-- /.box-header -->
+          <div class="box-body">
+            <div class="table-responsive">
+              <table class="table table-bordered  table-condensed table-hover">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Weight(in grams)</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                  <tr *ngFor="let item of data">
+                    <td>{{item.productTypeName}}</td>
+                    <td>{{item.weight}}</td>
+                    <td>
+                      <button type="button" class="btn btn-primary" id="modalthoughtedit" (click)="getDetails(item)"
+                        data-toggle="modal" data-target="#modal-form" title="Edit">
+                        <i class="fa fa-edit"></i>
+                      </button>&nbsp;
+                      <button type="button" class="btn btn-primary" data-toggle="modal" (click)="deleteData(item)"
+                        title="View Faq Details">
+                        <i class="fa fa-trash-o"></i>
+                      </button>&nbsp;
+                      <button type="button" class="btn btn-primary" data-toggle="modal" (click)="goToMsg(item._id)"
+                        title="Add Message">
+                        <i class="fa fa-envelope"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                  </tr>
+                </tfoot>
+              </table>
+              <button class="btn btn-sm btn-primary reload" (click)="loadmore()">
+                <i class="fa fa-repeat"></i> load more</button>
+            </div>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<div class="modal fade" id="modal-form">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title" id="myModalLabel">Recycling Product Type</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+
+            <div class="form-group">
+              <input type="text" class="form-control" id="" [(ngModel)]="item.productTypeName" />
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" id="" [(ngModel)]="item.weight" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" (click)="saveData()" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }">
+</ngx-loading>

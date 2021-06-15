@@ -1,0 +1,187 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+  </section>
+  <!-- Main content -->
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="box">
+          <div class="box-header">
+            <h5 class="box-title">Product Management</h5>
+            <button title="Add new" id="modal-add" class="btn btn-primary pull-right" data-target="#modal-form"
+              data-toggle="modal" (click)="addNew()">
+              <i class="fa fa-plus"></i> Add New</button>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body">
+            <div class="table-responsive">
+              <table class="table table-bordered  table-condensed table-hover">
+                <thead>
+                  <tr>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Set Popular</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of data">
+                    <td><img *ngIf="item.image" src="{{item.image}}" width="50" height="50"/></td>
+                    <td> {{item.name}}</td>
+                    <td>
+                      <span style="cursor: pointer;" data-status="" (click)="popularSet(item)"
+                        class="btn-smbadge badge  {{item.isPopular == 'yes' ? 'bg-green' : 'bg-red'}}">{{item.isPopular == 'yes' ? 'Yes' : 'No'}}</span>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-primary margin-r-5"
+                          data-target="#modal-form" data-toggle="modal"
+                          (click)="editC(item)" title="View">
+                          <i class="fa fa-edit"></i>
+                      </button>
+                      <button type="button" class="btn btn-primary margin-r-5" data-target="#modal-form-view"
+                        data-toggle="modal" (click)="viwData(item)" title="View">
+                        <i class="fa fa-eye"></i>
+                      </button>
+                      <button type="button" class="btn btn-primary margin-r-5" (click)="deleteData(item)"
+                        title="Delete">
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <button class="btn btn-sm btn-primary reload" (click)="loadmore()">
+                <i class="fa fa-repeat"></i>&nbsp; load more</button>
+            </div>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<div class="modal fade" id="modal-form">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title" id="myModalLabel">{{pagetitle}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label for="">Name</label>
+              <input type="text" class="form-control" id="" [(ngModel)]="item.name" />
+            </div>
+            <div class="form-group">
+              <label for="">Quantity</label>
+              <input type="number" min="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                class="form-control" id="" [(ngModel)]="item.qty" />
+            </div>
+            <div class="form-group">
+                <label for="">Points</label>
+                <input type="number" min="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                  class="form-control" id="" [(ngModel)]="item.point" />
+              </div>
+            
+            <div class="form-group">
+              <label>Category: </label>
+              <select class="form-control"  [(ngModel)]="category" >
+                <option value="">--Select--</option>
+                <option *ngFor="let cat of allCategory" value={{cat._id}}>
+                  {{cat.category}}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Vendor: </label>
+              <select class="form-control"  [(ngModel)]="vendor" >
+                <option value="">--Select--</option>
+                <option *ngFor="let ven of allVendor" value={{ven._id}}>
+                  {{ven.companyName}}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="">Description</label>
+              <ckeditor [(ngModel)]='item.description' [readonly]="false" debounce="500">
+              </ckeditor>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-12" *ngIf= 'item.image'>
+                  <p *ngFor="let img of item.image; let i = index" style="display: inline-block; margin-right: 10px;">
+                      <i class="fa fa-times image-delete" (click)='deleteImage(item._id,img._id, i)'></i>
+                      <img src="{{img.imageUrl}}" style="height:100px; width: 100px;" />
+                  </p>
+              </div>
+              <label for="">Images</label>
+              <input type="file" (change)="onSelectImageFile($event)" accept="image/gif,image/jpeg,image/jpg,image/png"
+                multiple  id="imageFile">
+            </div>
+            <div class="form-group">
+              <p style="margin-right:10px;display:inline-block;" *ngFor="let file_item of privewfile">
+                <img *ngIf='file_item' [src]="file_item" ngClass="img-lg">
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" (click)="saveData()" class="btn btn-primary">Save</button>
+          </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<div class="modal fade" id="modal-form-view">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title" id="myModalLabel">{{pagetitle}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label for="">Product:</label>&nbsp;{{item.name}}
+            </div>
+            <div class="form-group">
+              <label for="">Description:</label>
+              <div innerHTML="{{item.description}}"></div>
+            </div>
+            <div class="form-group">
+              <label for="">Stock:</label>&nbsp;{{item.qty}}
+            </div>
+            <div class="form-group">
+              <label for="">Points:</label>&nbsp;{{item.point}}
+            </div>
+            <div class="form-group">
+              <label for="">Images:</label>
+              <div class="col-sm-12">
+                <p *ngFor="let img of item.image" style="display: inline-block; margin-right: 10px;">
+                  <img src="{{img.imageUrl}}" style="height:100px; width: 100px;" />
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }">
+</ngx-loading>

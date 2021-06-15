@@ -1,0 +1,173 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+  </section>
+  <!-- Main content -->
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="box">
+          <div class="box-header">
+            <h5 class="box-title">Order Management</h5>
+            <!-- <button title="Add new" id="modal-add" class="btn btn-primary pull-right" data-target="#modal-form"
+              data-toggle="modal" (click)="addNew()">
+              <i class="fa fa-plus"></i> Add New</button> -->
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body">
+            <div class="table-responsive">
+              <table class="table table-bordered  table-condensed table-hover">
+                <thead>
+                  <tr>
+                    <th>Order Id</th>
+                    <th>totalPoint</th>
+                    <th>totalQty</th>
+                    <th>orderStatus</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of data">
+                    <td>{{item._id}}</td>
+                    <td>{{item.totalPoint}}</td>
+                    <td>{{item.totalQty}}</td>
+                    <td>
+                      <!-- <span style="cursor: pointer;" data-status="" (click)="popularSet(item)"
+                        class="btn-smbadge badge  {{item.isPopular == 'yes' ? 'bg-green' : 'bg-red'}}">
+                        {{item.isPopular == 'yes' ? 'Yes' : 'No'}}</span> -->
+                      <select (change)="changeStatus(item)" class="btn-smbadge badge 
+                      {{item.orderStatus == 'Accepted' ? 'bg-teal' : item.orderStatus == 'Dispatched' ? 'bg-yellow' : item.orderStatus == 'Shipped' 
+                      ? 'bg-blue' : item.orderStatus == 'Delivered' ? 'bg-green' :'bg-red'}}"
+                        [(ngModel)]='item.orderStatus'>
+                        <option class="btn-smbadge bg-white" value="Accepted">Accepted</option>
+                        <option value="Dispatched">Dispatched</option>
+                        <option value="Shipped">Shipped</option>
+                        <option value="Delivered">Delivered</option>
+                        <option value="Cancel">Cancel</option>
+                      </select>
+                    </td>
+                    <td>
+
+                      <button type="button" class="btn btn-primary margin-r-5" data-target="#modal-form-view"
+                        data-toggle="modal" (click)="viwData(item)" title="View">
+                        <i class="fa fa-eye"></i>
+                      </button>
+
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <button class="btn btn-sm btn-primary reload" (click)="loadmore()">
+                <i class="fa fa-repeat"></i>&nbsp; load more</button>
+            </div>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+
+<div class="modal fade" id="modal-form-view">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title" id="myModalLabel">{{pagetitle}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label for="">Order Id:</label>&nbsp;{{item._id}}
+            </div>
+            <div class="form-group">
+              <label for="">User:</label>&nbsp;{{user}}
+            </div>
+
+            <!-- <div class="form-group">
+              <label for="">Quantity:</label>&nbsp;{{item.totalQty}}
+            </div> -->
+            <div class="form-group">
+
+              <div class="col-sm-12">
+                <table class="table">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th>Image</th>
+                      <th>Name</th>
+                      <th>Quantity</th>
+                      <th>Point</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let product of item.products">
+                      <td><img src="{{product.productImg}}" style="height:100px; width: 100px;" /></td>
+                      <td>{{product.productName}}</td>
+                      <td>{{product.qty}}</td>
+                      <td>{{product.unitPoint}}</td>
+                      <td>{{product.totalPoint}}</td>
+                    </tr>
+                    <tr style="background: gray;">
+                      <td colspan="1"></td>
+                      <td>Total</td>
+                      <td>{{item.totalQty}}</td>
+                      <td></td>
+                      <td>{{item.totalPoint}}</td>
+                    </tr>
+                  </tbody>
+
+                </table>
+                <!-- <p *ngFor="let product of item.products" style="display: inline-block; margin-right: 10px;">
+                  <img src="{{product.productImg}}" style="height:100px; width: 100px;" />
+                </p> -->
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="">Shipping Address:</label>&nbsp;
+              <table class="table tb2">
+
+                <tbody *ngIf='item'>
+                  <tr style="background: #80808059;">
+                    <td>Address One :</td>
+                    <td colspan="4">{{shipping ? shipping.addressOne :''}}</td>
+                  </tr>
+                  <tr style="background: #80808059;">
+                    <td>Address Two :</td>
+                    <td colspan="4">{{shipping ? shipping.addressTwo :''}}</td>
+                  </tr>
+                  <tr style="background: #80808059;">
+                    <td>Country :</td>
+                    <td colspan="4">{{shipping ? shipping.country :''}}</td>
+                  </tr>
+                  <tr style="background: #80808059;">
+                    <td>State :</td>
+                    <td colspan="4">{{shipping ? shipping.state :''}}</td>
+                  </tr>
+                  <tr style="background: #80808059;">
+                      <td>Zip :</td>
+                      <td colspan="4">{{shipping ? shipping.zipCode :''}}</td>
+                    </tr>
+                </tbody>
+
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }">
+</ngx-loading>

@@ -1,0 +1,103 @@
+<div class="content-wrapper">
+  <section class="content-header">
+  </section>
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="box">
+          <div class="box-header">
+            <h5 class="box-title">Recycling Product Message</h5>
+            <button title="Add new" id="modal-add" class="btn btn-primary pull-right" (click)="addNew()"
+              data-target="#modal-form" data-toggle="modal">
+              <i class="fa fa-plus"></i> Add New</button>&nbsp;
+
+              <button title="Go Back" class="btn btn-primary pull-right" (click)="backToPreviousPage()"
+              >
+              <i class="fa fa-undo" aria-hidden="true"></i> Go Back</button>
+          </div>
+
+          <!-- /.box-header -->
+          <div class="box-body">
+            <div class="table-responsive">
+              <table class="table table-bordered  table-condensed table-hover">
+                <thead>
+                  <tr>
+                    <th>No of Scan</th>
+                    <th>Message</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                  <tr *ngFor="let item of data">
+                    <td>{{item.number}}</td>
+                    <td>{{item.message}}</td>
+                    <td>
+                      <button type="button" class="btn btn-primary" id="modalthoughtedit" (click)="getDetails(item)"
+                        data-toggle="modal" data-target="#modal-form" title="Edit">
+                        <i class="fa fa-edit"></i>
+                      </button>&nbsp;
+                      <button type="button" class="btn btn-primary" data-toggle="modal" (click)="deleteData(item)"
+                        title="View Faq Details">
+                        <i class="fa fa-trash-o"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                  </tr>
+                </tfoot>
+              </table>
+              <button class="btn btn-sm btn-primary reload" (click)="loadmore()">
+                <i class="fa fa-repeat"></i> load more</button>
+            </div>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<div class="modal fade" id="modal-form">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title" id="myModalLabel">Recycling Product Message</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+
+            <div class="form-group">
+              <label>Scan No: </label>
+              <select class="form-control"  [(ngModel)]="item.number" [disabled]="isDisabled">
+                <option value="">--Select--</option>
+                <option *ngFor="let no of scanNo" value={{no}}>
+                  {{no}}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <textarea class="form-control" id="" [(ngModel)]="item.message"></textarea>
+              
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" (click)="saveData()" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }">
+</ngx-loading>
